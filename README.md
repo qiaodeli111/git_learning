@@ -37,8 +37,17 @@ filter.lfs.process=git-lfs filter-process
 filter.lfs.required=true
 filter.lfs.clean=git-lfs clean -- %f
 filter.lfs.smudge=git-lfs smudge -- %f
-✔ ~/Documents/git_learning [master|…2] 
-``` 
+✔ ~/Documents/git_learning [master|…2]
+```
+
+### Git commit process
+
+```
+git add README.md
+git status
+git commit -m 'Add README.md'
+git log
+```
 
 `git add -u` Only add the Updated files to stage area
 
