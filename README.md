@@ -144,6 +144,14 @@ Date:   Wed Dec 26 16:54:43 2018 +0800
     rename git_learning.zip
 ```
 
+
+### Delete a file
+
+```
+git rm <file-name>
+```
+
+
 ### git log
 
 ```
@@ -261,6 +269,42 @@ Add style.css
     <header>
 ```
 
+### Object will be created when the file added to Stage area
+
+```
+✔ ~/Documents/git_learning/checking_git_objects [master|✔] 
+15:38 $ find .git/objects/ -type f
+✔ ~/Documents/git_learning/checking_git_objects [master|✔] 
+15:38 $ cp ../index.html .
+✔ ~/Documents/git_learning/checking_git_objects [master|…1] 
+15:38 $ find .git/objects/ -type f
+✔ ~/Documents/git_learning/checking_git_objects [master|…1] 
+15:38 $ ls
+index.html
+✔ ~/Documents/git_learning/checking_git_objects [master|…1] 
+15:38 $ git add index.html 
+✔ ~/Documents/git_learning/checking_git_objects [master|●1] 
+15:38 $ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+
+  new file:   index.html
+
+✔ ~/Documents/git_learning/checking_git_objects [master|●1] 
+15:38 $ find .git/objects/ -type f
+.git/objects/87/6306b3624db161e7f4e59def735996835d08f6
+
+# Git refers the same object for the same file
+
+✔ ~/Documents/git_learning/checking_git_objects [master|●1] 
+15:39 $ find ../.git/objects/ -type f | grep 87/63
+../.git/objects/87/6306b3624db161e7f4e59def735996835d08f6
+```
+
 
 ### Detached HEAD
 
@@ -322,4 +366,137 @@ Successfully rebased and updated refs/heads/master.
 ### Combine commits
 
 ```
+git rebase -i xxxxx
+
+pick xxxxx
+s xxxxx
+s xxxxx
+s xxxxx
+
+```
+
+### Delete some commits
+
+```
+git reset --hard <commit-id>
+```
+
+### Diff the stage area with HEAD
+
+```
+git add xxx
+git diff --cached 
+```
+
+### Diff the working area with stage area
+
+```
+git diff
+git diff -- <filename>
+```
+
+### Diff the different branches (Actually it become the problem of compare two commits)
+
+```
+git diff temp master
+git diff temp master -- index.html
+git diff 94c8215 HEAD -- index.html
+```
+
+
+### Reset Staged area same as HEAD
+
+```
+git reset HEAD
+git reset HEAD -- styles/style.css index.html
+```
+
+### Reset Working area same as Staged area
+
+```
+git checkout -- <filename>
+```
+
+
+### Git stash usage - Save current job and recover it later
+
+```
+git stash
+git stash list
+
+git stash apply # Do not delete the content of stash area
+git stash pop   # Apply the content to working area and delete the content of the stash area in the same time
+```
+
+
+### .gitignore
+
+```
+format: 
+*.swp
+doc/
+```
+
+****
+
+## Git Backup
+
+### Local backup
+
+```
+git clone --bare /home/qiaodeli/Documents/git_learning/.git ya.git
+git clone --bare file:///home/qiaodeli/Documents/git_learning/.git zhineng.git
+```
+
+### Backup with remote protocal
+
+```
+git remote -v 
+git remote add git_learning file:///home/qiaodeli/Documents/devops/git_learning_backup/git_learning.git
+git branch -av
+git checkout -b qiaodeli
+vim xxxxxx
+git commit -am "xxxxx"
+
+git push git_learning
+```
+
+### Restore a git repo
+
+method 1:
+
+```
+git clone xxx.git
+```
+
+method 2:
+
+```
+✔ ~/Documents/devops/git_learning_backup [master|…144] 
+12:52 $ mkdir restore
+✔ ~/Documents/devops/git_learning_backup [master|…144] 
+12:52 $ cd restore
+✔ ~/Documents/devops/git_learning_backup/restore [master|✔] 
+12:52 $ git init
+Initialized empty Git repository in /home/qiaodeli/Documents/devops/git_learning_backup/restore/.git/
+✔ ~/Documents/devops/git_learning_backup/restore [master|✔] 
+12:52 $ ll
+total 0
+✔ ~/Documents/devops/git_learning_backup/restore [master|✔] 
+12:52 $ ls -la
+total 12
+drwxrwxr-x. 3 qiaodeli qiaodeli 4096 Dec 28 12:52 .
+drwxrwxr-x. 5 qiaodeli qiaodeli 4096 Dec 28 12:52 ..
+drwxrwxr-x. 7 qiaodeli qiaodeli 4096 Dec 28 12:52 .git
+✔ ~/Documents/devops/git_learning_backup/restore [master|✔] 
+12:52 $ git remote
+✔ ~/Documents/devops/git_learning_backup/restore [master|✔] 
+12:52 $ git remote -v
+✔ ~/Documents/devops/git_learning_backup/restore [master|✔] 
+12:52 $ git remote add git_learning file:///home/qiaodeli/Documents/devops/git_learning_backup/git_learning.git
+✔ ~/Documents/devops/git_learning_backup/restore [master|✔] 
+12:53 $ git pull git_learning master
+```
+
+
 
